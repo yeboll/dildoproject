@@ -5,6 +5,7 @@
 	"trade_strategies" : {
 
 		"trand_and_rsi" : {
+			"type" : "custom",
 			"modules_order" : ["TrandDetermer", "RSI", "RsiTrandSolver"],
 			"modules_conf": {
 
@@ -25,6 +26,11 @@
 				}
 
 			}
+		},
+
+		"rsi" : {
+			"type" : "default",
+			"path" : "rsi.json"
 		}
 
 

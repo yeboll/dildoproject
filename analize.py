@@ -16,6 +16,7 @@ def load_modules(mdir):
             modules[class_name] = getattr(module, class_name)
         except:
             print(f'Error import module {module_name}') 
+
     return modules
 
 def load_configs(cdir):
@@ -34,12 +35,20 @@ def get_all_ticker_candles(ticker, tfs):
         candles[tf] = db.get_all_candles(ticker, tf)
     return candles
 
+
 def get_modules_chain(conf):
     chain = []
+
+    if conf['type'] == 'default':
+        strat_path = strategies_dir + conf['path']
+        with open(strat_path, 'r') as f:
+            conf = eval(f.read())
+
     for module in conf['modules_order']:
         if module not in modules:
             continue
         chain.append(modules[module](conf['modules_conf'][module]))
+
     return chain
 
 def save_solution(trade_solution, ticker, strategy):
@@ -49,6 +58,7 @@ def save_solution(trade_solution, ticker, strategy):
         trade_solutions[ticker][strategy] = {}
     trade_solutions[ticker][strategy] = trade_solution
 
+strategies_dir = './strategies/'
 modules = load_modules('./modules/')
 db = CandleStorage('185.58.191.251', 9000)
 conf = load_configs('./configs/')
@@ -64,3 +74,5 @@ for tik in tickers:
         for module in modules_chain:
             solution, candles  = module.decide(candles)
             save_solution(solution, tik, strategy)
+
+print(json.dumps(trade_solutions, indent=4))
