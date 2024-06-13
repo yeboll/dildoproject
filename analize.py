@@ -22,11 +22,14 @@ def load_modules(mdir):
 def load_configs(cdir):
     config = {}
     for conffile in os.listdir(cdir):
-        with open(cdir + conffile, 'r' ) as f:
-            conf = eval(f.read())
-            ticker_name = conf['ticker_name']
-            del conf['ticker_name']
-            config[ticker_name] = conf
+        try:
+            with open(cdir + conffile, 'r' ) as f:
+                conf = eval(f.read())
+                ticker_name = conf['ticker_name']
+                del conf['ticker_name']
+                config[ticker_name] = conf
+        except:
+            print(f'Error read config {conffile}')
     return config
 
 def get_all_ticker_candles(ticker, tfs):
@@ -38,16 +41,24 @@ def get_all_ticker_candles(ticker, tfs):
 
 def get_modules_chain(conf):
     chain = []
+    strat_path = strategies_dir + conf['path']
+    with open(strat_path, 'r') as f:
+        default_conf = eval(f.read())
 
     if conf['type'] == 'default':
-        strat_path = strategies_dir + conf['path']
-        with open(strat_path, 'r') as f:
-            conf = eval(f.read())
+        conf['modules_conf'] = default_conf
 
-    for module in conf['modules_order']:
-        if module not in modules:
-            continue
-        chain.append(modules[module](conf['modules_conf'][module]))
+    elif conf['type'] == 'custom':
+        for module in default_conf['modules_conf']:
+            for key in default_conf['modules_conf'][module]:
+                if module in conf['modules_conf']:
+                    if key in conf['modules_conf'][module]:
+                        default_conf['modules_conf'][module][key] = \
+                                conf['modules_conf'][module][key]
+
+    conf = default_conf
+    for mod in default_conf['modules_order']:
+        chain.append(modules[mod](conf['modules_conf'][mod]))
 
     return chain
 
