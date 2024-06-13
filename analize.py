@@ -41,23 +41,25 @@ def get_all_ticker_candles(ticker, tfs):
 
 def get_modules_chain(conf):
     chain = []
-    strat_path = strategies_dir + conf['path']
-    with open(strat_path, 'r') as f:
-        default_conf = eval(f.read())
 
-    if conf['type'] == 'default':
-        conf['modules_conf'] = default_conf
+    if type(conf) == str:
+        strat_path = strategies_dir + conf + '.json'
+        with open(strat_path, 'r') as f:
+            default_conf = eval(f.read())
+    else:
+        strat_path = strategies_dir + conf['base'] + '.json'
+        with open(strat_path, 'r') as f:
+            default_conf = eval(f.read())
 
-    elif conf['type'] == 'custom':
         for module in default_conf['modules_conf']:
             for key in default_conf['modules_conf'][module]:
                 if module in conf['modules_conf']:
                     if key in conf['modules_conf'][module]:
                         default_conf['modules_conf'][module][key] = \
                                 conf['modules_conf'][module][key]
-
     conf = default_conf
-    for mod in default_conf['modules_order']:
+
+    for mod in conf['modules_order']:
         chain.append(modules[mod](conf['modules_conf'][mod]))
 
     return chain
@@ -66,8 +68,8 @@ def save_solution(trade_solution, ticker, strategy):
     if ticker not in trade_solutions:
         trade_solutions[ticker] = {}
     if strategy not in trade_solutions[ticker]:
-        trade_solutions[ticker][strategy] = {}
-    trade_solutions[ticker][strategy] = trade_solution
+        trade_solutions[ticker][strategy] = []
+    trade_solutions[ticker][strategy].append(trade_solution)
 
 strategies_dir = './strategies/'
 modules = load_modules('./modules/')
@@ -80,10 +82,21 @@ for tik in tickers:
     tc = conf[tik]
     candles = get_all_ticker_candles(tik, tc['required_timeframes']) 
 
-    for strategy in tc['trade_strategies']:
-        modules_chain = get_modules_chain(tc['trade_strategies'][strategy])
+    custom_strategies = tc['trade_strategies']['custom']
+    default_strategies = tc['trade_strategies']['default']
+
+    for ds in default_strategies:
+        modules_chain = get_modules_chain(ds)
+
         for module in modules_chain:
             solution, candles  = module.decide(candles)
-            save_solution(solution, tik, strategy)
+            save_solution(solution, tik, ds)
+
+    for cs in custom_strategies:
+        modules_chain = get_modules_chain(cs)
+
+        for module in modules_chain:
+            solution, candles  = module.decide(candles)
+            save_solution(solution, tik, cs['base'])
 
 print(json.dumps(trade_solutions, indent=4))

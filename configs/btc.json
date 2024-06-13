@@ -2,10 +2,18 @@
 	"ticker_name" : "BTCUSDT",
 	"required_timeframes" : ["M1", "M5", "M30", "H1", "H4", "D"],
 	"trade_strategies" : {
+			"custom" : [
+				{
+					"base" : "rsi",
+					"modules_conf" : {
+						"RSI" : {
+							"use_tf" : ["M30", "M5"]
+						}
+					}
+				}
+			
+			],
 
-		"rsi_m30" : {
-			"type" : "default",
-			"path" : "rsi.json"
-		}
+			"default" : ["rsi"]
 	}
 }
