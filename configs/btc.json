@@ -1,38 +1,11 @@
 {
 	"ticker_name" : "BTCUSDT",
-	"required_timeframes" : ["M1", "M5", "M30",
-						"H1", "H4", "D"],
+	"required_timeframes" : ["M1", "M5", "M30", "H1", "H4", "D"],
 	"trade_strategies" : {
 
-		"trand_and_rsi" : {
-			"type" : "custom",
-			"modules_order" : ["TrandDetermer", "RSI", "RsiTrandSolver"],
-			"modules_conf": {
-
-				"TrandDetermer" : {
-					"tf_high" : "M30",
-					"tf_low" : "M5"
-				},
-
-				"RSI": {
-					"use_tf" : ["M5", "M30"],
-					"len" : 14
-				},
-
-				"RsiTrandSolver" : {
-					"high_tf" : "M30",
-					"low_tf" : "M5",
-					"risk_to_revard" : 3
-				}
-
-			}
-		},
-
-		"rsi" : {
+		"rsi_m30" : {
 			"type" : "default",
 			"path" : "rsi.json"
 		}
-
-
 	}
 }
