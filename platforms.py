@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 from pybit.unified_trading import HTTP
+from time import sleep
 
 class Platform(ABC):
     @abstractmethod
@@ -40,12 +41,25 @@ class Bybit(Platform):
 
 
     def get_last_candles(self, tiker, tf, time = 0) -> []:
-        response = self.session.get_kline(category="linear",
-                                     symbol=tiker,
-                                     interval=self.tf2interval(tf),
-                                     start=self.strtime2timestamp(time),
-                                     end=datetime.now().timestamp())
-        candles = response['result']['list']
+
+        candles = []
+        start = self.strtime2timestamp(time)
+
+        for i in range(10):
+            response = self.session.get_kline(category="linear",
+                                         symbol=tiker,
+                                         interval=self.tf2interval(tf),
+                                         start=start,
+                                         limit=1000)
+            cnd = response['result']['list']
+            start = int(cnd[0][0])
+            sleep(0.3)
+
+            for c in cnd:
+                candles.append(c)
+        
+        candles.sort()
+        candles = candles[::-1]
 
         data = [
             {
