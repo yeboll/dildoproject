@@ -45,5 +45,5 @@ class CandleStorage:
             last_candle = json.loads(all_candles[0])
             return last_candle['Date']
         else:
-            return '2024-01-01 00:00:00'
+            return 0
 
