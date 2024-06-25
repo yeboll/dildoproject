@@ -45,7 +45,7 @@ class Bybit(Platform):
         candles = []
         start = self.strtime2timestamp(time)
 
-        for i in range(10):
+        for i in range(3):
             response = self.session.get_kline(category="linear",
                                          symbol=tiker,
                                          interval=self.tf2interval(tf),
@@ -53,7 +53,6 @@ class Bybit(Platform):
                                          limit=1000)
             cnd = response['result']['list']
             start = int(cnd[0][0])
-            sleep(0.3)
 
             for c in cnd:
                 candles.append(c)

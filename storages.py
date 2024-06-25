@@ -5,7 +5,7 @@ class CandleStorage:
     def __init__(self, host, port):
         self.r = redis.Redis(host=host, port=port, db=0)
         self.tf = ['M1', 'M5', 'M15', 'M30']
-        self.max_size = 500
+        self.max_size = 5000
 
     def save_candle(self, ticker, timeframe, candle):
         key = f"{ticker}:{timeframe}"
@@ -45,5 +45,5 @@ class CandleStorage:
             last_candle = json.loads(all_candles[0])
             return last_candle['Date']
         else:
-            return 0
+            return '2024-01-01 00:00:00'
 
