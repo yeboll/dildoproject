@@ -4,7 +4,6 @@ import json
 class CandleStorage:
     def __init__(self, host, port):
         self.r = redis.Redis(host=host, port=port, db=0)
-        self.tf = ['M1', 'M5', 'M15', 'M30']
         self.max_size = 5000
 
     def save_candle(self, ticker, timeframe, candle):

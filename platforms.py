@@ -12,7 +12,6 @@ class Platform(ABC):
     def get_last_candles(self, tiker, tf, time = 0) -> []:
         ...
 
-
 class Bybit(Platform):
     
     session = HTTP()
@@ -28,9 +27,9 @@ class Bybit(Platform):
 
     def tf2interval(self, tf):
         interval = 0
-        if tf[0] == 'M': # минутка
+        if tf[0] == 'M':
             return int(tf[1:])
-        elif tf[0] == 'H':  # часовик
+        elif tf[0] == 'H':
             return int(tf[1:]) * 60
         else: return tf[0]
 

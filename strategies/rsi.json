@@ -1,9 +1,0 @@
-{
-	"modules_order" : ["RSI"],
-	"modules_conf"	: {
-		"RSI" : {
-			"use_tf" : ["M30"],
-			"len" : 14
-		}
-	}
-}

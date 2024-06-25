@@ -20,7 +20,6 @@ db = CandleStorage(ip, port)
 for ticker in pl.get_avaliable_tikers():
     ld = db.get_last_candle_date(ticker, args.timeframe)
     data = pl.get_last_candles(ticker, args.timeframe, ld)
-    print(ticker, args.timeframe, len(data))
     sleep(0.05)
 
     for cnd in data:
