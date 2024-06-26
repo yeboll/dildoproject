@@ -36,6 +36,6 @@ class TrandPlusRSI(Strategy):
             if self.sol['action'] == None:
                 self.sol['action'] = 'keep'
         except:
-            self.sol['log'] = 'error'
+            self.sol['log'].append('Error')
 
         return (self.sol, data)

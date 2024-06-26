@@ -29,7 +29,7 @@ class Strategy():
             'tp' : None,
             'sl' : None,
             'deadline' : None,
-            'log' : None
+            'log' : []
         }
         self.modules = self.load_strategy_modules(conf)
         self.conf = conf
