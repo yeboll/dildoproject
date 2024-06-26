@@ -23,13 +23,13 @@ class TrandPlusRSI(Strategy):
             # тренд на младшем ебашит вниз и низкий rsi
             if self.is_trand_up(high_tf_candles['AVG']):
                 if not self.is_trand_up(low_tf_candles['AVG']):
-                    if low_tf_candles['RSI'][len(low_tf_candles) -1] <= 30:
+                    if high_tf_candles['RSI'][len(high_tf_candles) -1] <= 30:
                         self.sol['action'] = 'buy'
 
             # если ебашит вниз, то все наоборот
             elif not self.is_trand_up(high_tf_candles['AVG']):
                 if  self.is_trand_up(low_tf_candles['AVG']):
-                    if low_tf_candles['RSI'][len(low_tf_candles) - 1] >= 70:
+                    if high_tf_candles['RSI'][len(high_tf_candles) - 1] >= 70:
                         self.sol['action'] = 'sell'
 
             # если не туда не туда - нахуй надo
