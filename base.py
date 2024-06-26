@@ -13,7 +13,8 @@ class Strategy():
                 module = import_module(mod)
                 class_ = getattr(module, module_name)
                 module_obj = class_(mod_cfg[module_name])
-                modules.append(module_obj)
+                modules.append({'name' : module_name, 
+                                'obj' : module_obj})
             except:
                 pass
         return modules
