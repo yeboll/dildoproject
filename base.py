@@ -32,6 +32,7 @@ class Strategy():
             'log' : None
         }
         self.modules = self.load_strategy_modules(conf)
+        self.conf = conf
 
     # с использованием всех сконфигурированных
     # модулей сформировать торговое решение и вернуть
