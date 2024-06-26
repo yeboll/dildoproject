@@ -31,8 +31,8 @@ class Strategy():
             'deadline' : None,
             'log' : []
         }
-        self.modules = self.load_strategy_modules(conf)
-        self.conf = conf
+        self.modules = self.load_strategy_modules(conf['modules_conf'])
+        self.conf = conf['modules_conf']
 
     # с использованием всех сконфигурированных
     # модулей сформировать торговое решение и вернуть
