@@ -1,0 +1,13 @@
+{
+	"modules_order" : ["TrandDetermer", "RSI"],
+	"modules_conf"	: {
+		"TrandDetermer" : {
+			"tf_high" : "D",
+			"tf_low" : "H4"
+		},
+		"RSI" : {
+			"use_tf" : ["D", "H4"],
+			"len" : 14
+		}
+	}
+}

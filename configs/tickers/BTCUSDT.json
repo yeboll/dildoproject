@@ -1,0 +1,18 @@
+{
+	"required_timeframes" : ["M1", "M5", "M30", "H1", "H4", "D"],
+	"trade_strategies" : {
+			"custom" : [
+				{
+					"base" : "TrandPlusRSI",
+					"modules_conf" : {
+						"RSI" : {
+							"use_tf" : ["M30", "M5"]
+						}
+					}
+				}
+			
+			],
+
+			"default" : ["TrandPlusRSI"]
+	}
+}
